@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -17,11 +16,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.alura.funcionarios.api.entities.FuncionarioEntity;
 import br.com.alura.funcionarios.api.models.Funcionario;
 import br.com.alura.funcionarios.api.repositories.Funcionarios;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("funcionario")
@@ -30,6 +33,16 @@ public class FuncionarioRestController {
 	@Autowired
 	private Funcionarios funcionarios;
 	
+	@ApiOperation(value = "Pesquisa Funcionario", notes = "Pesquisa todos os Funcionario na base de dados.", response = Funcionario.class, responseContainer="List")
+    @ApiResponses(value = { 
+        @ApiResponse(code = 201, message = "Sucesso!", response = Funcionario.class, responseContainer="List"),
+        @ApiResponse(code = 400, message = "Requisição inválida."),
+        @ApiResponse(code = 401, message = "Requisição não autorizada."),
+        @ApiResponse(code = 500, message = "Erro no servidor.") })
+    @RequestMapping(value = "/todos",
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
+        method = RequestMethod.GET)
 	@GetMapping(value = "/todos", consumes = "application/json", produces="application/json")
 	public ResponseEntity<List<Funcionario>> todos(){
 		
@@ -63,6 +76,17 @@ public class FuncionarioRestController {
 		}
 	}
 	
+	
+	@ApiOperation(value = "Cadastra Funcionario", notes = "Cadastra um Funcionario na base de dados.", response = Funcionario.class)
+    @ApiResponses(value = { 
+        @ApiResponse(code = 201, message = "Funcionario cadastrado com sucesso!", response = Funcionario.class),
+        @ApiResponse(code = 400, message = "Requisição inválida."),
+        @ApiResponse(code = 401, message = "Requisição não autorizada."),
+        @ApiResponse(code = 500, message = "Erro no servidor.") })
+    @RequestMapping(value = "",
+        produces = { "application/json" }, 
+        consumes = { "application/json" },
+        method = RequestMethod.POST)
 	@PostMapping(consumes = "application/json", produces="application/json")
 	public ResponseEntity<Funcionario> cadastra(@RequestBody(required=true) Funcionario funcionario){
 
@@ -90,6 +114,15 @@ public class FuncionarioRestController {
 		}
 	}
 	
+	
+	@ApiOperation(value = "Altera um Funcionario", notes = "Altera um Funcionario na base de dados.", response = Funcionario.class)
+    @ApiResponses(value = { 
+        @ApiResponse(code = 201, message = "Sucesso!", response = Funcionario.class),
+        @ApiResponse(code = 400, message = "Requisição inválida."),
+        @ApiResponse(code = 401, message = "Requisição não autorizada."),
+        @ApiResponse(code = 500, message = "Erro no servidor.") })
+    @RequestMapping(value = "/{id}",
+        method = RequestMethod.PUT)
 	@PutMapping(value = "/{id}", consumes = "application/json", produces="application/json")
 	public ResponseEntity<Void> altera(@PathVariable Long id, @RequestBody(required=true) Funcionario funcionario){
 
@@ -124,6 +157,14 @@ public class FuncionarioRestController {
 		}
 	}
 	
+	@ApiOperation(value = "Apaga um Funcionario", notes = "Apaga um Funcionario na base de dados.")
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Sucesso!"),
+        @ApiResponse(code = 400, message = "Requisição inválida."),
+        @ApiResponse(code = 401, message = "Requisição não autorizada."),
+        @ApiResponse(code = 500, message = "Erro no servidor.") })
+    @RequestMapping(value = "/{id}",
+       method = RequestMethod.DELETE)
 	@DeleteMapping(value = "/{id}", produces="application/json")
 	public ResponseEntity<Void> remove(@PathVariable Long id){
 

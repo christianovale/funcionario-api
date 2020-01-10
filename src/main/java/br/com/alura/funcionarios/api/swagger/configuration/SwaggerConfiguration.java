@@ -44,7 +44,7 @@ public class SwaggerConfiguration {
 	    return new ApiInfoBuilder()
 	       .title("Funcionarios API")
 	       .description("API responsável por Cadastrar, Consultar, Alterar e Excluir funcionários")
-	       .contact(new Contact("Contato Alura", "http://alura.com.br", "contato@alura.com.br"))
+	       .contact(new Contact("Christiano Rodarte Vale", "https://github.com/christianovale", "christianovale@gmail.com"))
 	       .version("1.0.0")
 	       .build();
 	}
